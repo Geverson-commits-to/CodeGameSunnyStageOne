@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
         if (estaVivo) {
             float direcao = Input.GetAxis("Horizontal"); //varia entre -1 e 1
 
-            rig.velocity = new Vector3(direcao * velocidade, rig.velocity.y);
+            rig.velocity = new Vector2(direcao * velocidade, rig.velocity.y);
 
             if(direcao > 0f)
             {
@@ -108,14 +108,9 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Body"))
-        {
-            //perde vida
-        }
-
         if(collision.CompareTag("Head"))
         {
-            rig.AddForce(new Vector2(0f, forcaPulo), ForceMode2D.Impulse); //empurra personagem
+            rig.AddForce(new Vector2(0f, forcaPulo - 2f), ForceMode2D.Impulse); //empurra personagem
             GameObject exp = Instantiate(explosao, collision.transform.position, collision.transform.rotation); //cria explosao
             Destroy(exp, 0.5f);
             Destroy(collision.transform.parent.gameObject); //destroi inimigo
@@ -145,7 +140,7 @@ public class Player : MonoBehaviour
                 anim.SetTrigger("Morte");
                 Circle.enabled = false;
                 Sprite.enabled = false;
-                Invoke("ReloadLevel", 0.8f);
+                Invoke("ReloadLevel", 0.5f);
             }
         }
     }
